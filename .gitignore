@@ -1,0 +1,8 @@
+/build
+/Linux-*
+/Darwin-*
+*.so
+*.dylib
+*.o
+*.swp
+*~

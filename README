@@ -1,0 +1,76 @@
+===================================================================
+ptexutils - Utilities to assist in the use of Ptex in production
+===================================================================
+
+This is the initial release of ptexutils, a set of small tools that are
+intended to help in the adoption of Ptex (Per-Face Texturing).
+
+
+Build Instructions
+------------------
+
+To build using CMake, just do:
+
+    make
+
+Under the hood the Makefile creates a temporary build directory and runs cmake
+there, e.g.:
+
+    mkdir -p build/foo &&
+    cd build/foo &&
+    cmake ../.. &&
+    make
+
+The provided top-level Makefile respects the "prefix" and "DESTDIR" variables.
+This allows you to build ptexutils with prefix=/usr into a temporary staging
+directory:
+
+    make DESTDIR=/tmp/ptexutils prefix=/usr install
+
+Using ptxtransfer
+-----------------
+
+The ptxtransfer utility is designed to transfer texel data when
+a model has changed. The change may include mesh topology, but the
+position and shape of the old and new versions should align roughly.
+The executable attempts to copy face textures for a single Ptex file.
+
+To run from the command line, do:
+
+ptxtransfer [options] <old.ptx> <new.ptx>
+
+Both of the provided Ptex files must include geometry meta data for the
+transfer to succeed. The 'new' file does not need to contain useful
+texture information, this file is only used for the geometry data.
+The resolution, data type and channel format of the output will be
+automatically configured to match the input, though the resolution may
+not match exactly. The texture data in 'new.ptx' will be populated and
+that file overwritten.
+
+A maximum number of threads can be specified with an option, e.g.
+"-t 4" will utilize four threads.
+
+The transfer uses a two step algorithm. First, faces are matched using
+position between the old and new meshes. Any matches found can be copied
+directly, with possible flips and rotates applied to account for changes
+in the vertex ordering. Such copies will preserve the texture quality
+perfectly. Then, unmatched faces in the target mesh will completed using
+a texel-by-texel point cloud lookup. The distance limits for these searches
+can be adjusted using command line flags ("-m" and "-d"), detailed in the
+"-h" help text. Increasing the distances may help if the shape change in
+the old and new models is comparatively large.
+
+
+Future Work
+-----------
+
+More utilities are planned to be added a later date.
+
+The ptxtransfer code may be reworked into a library to assist with
+integration into other tools. The ptxtransfer code currently uses
+texel positions corresponding with a polygonal mesh - subdivision
+surface support could be added to minimize distortion for textures
+painted on such models.
+
+
+- Dan Teece, Walt Disney Animation Studios
