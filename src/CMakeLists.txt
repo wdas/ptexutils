@@ -18,4 +18,9 @@
 add_executable(ptxtransfer ptxtransfer.cpp)
 target_link_libraries(ptxtransfer ${PTEX_LIBRARIES} gomp)
 
+add_executable(ptxview ptxview.cpp)
+target_link_libraries(ptxview ${PTEX_LIBRARIES} glut GLU)
+
 install(TARGETS ptxtransfer DESTINATION bin)
+
+install(TARGETS ptxview DESTINATION bin)
