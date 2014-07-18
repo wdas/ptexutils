@@ -14,13 +14,6 @@
 # You may obtain a copy of the License at
 # http://www.apache.org/licenses/LICENSE-2.0
 
-# Try to find PTex library and include path.
-# Once done this will define
-#
-# PTEX_FOUND
-# PTEX_INCLUDE_DIR
-# PTEX_LIBRARY
-#
 
 if (WIN32)
     find_path( PTEX_INCLUDE_DIR
