@@ -27,6 +27,7 @@ directory:
 
     make DESTDIR=/tmp/ptexutils prefix=/usr install
 
+
 Using ptxtransfer
 -----------------
 
@@ -59,6 +60,42 @@ a texel-by-texel point cloud lookup. The distance limits for these searches
 can be adjusted using command line flags ("-m" and "-d"), detailed in the
 "-h" help text. Increasing the distances may help if the shape change in
 the old and new models is comparatively large.
+
+
+Using ptxview
+-------------
+
+The ptxview utility is for viewing the contents of a single Ptex file.
+If the file contains geometry meta data, the textures can be visualized
+in 3D, otherwise a 2D layout of the faces will be shown.
+
+To run from the command line, do:
+
+ptxview [options] filename.ptx
+
+A particular face ID can be specified with "-face <n>", and the 3D
+display mode can be disabled with a "-flat" option.
+
+Individual Ptex faces can be isolated by a left-click, with 'Esc'
+or 'Up Arrow' returning to the default view. Right-clicking will
+produce a pop-up menu with display options. Other controls include:
+
+Navigation:
+        Alt-Button 1:     rotate scene (3D mode only)
+        Alt-Button 2:     pan scene
+        Alt-Buttons 1&2:  zoom scene
+
+Hot Keys:
+        Right Arrow:      view next face
+        Left Arrow:       view previous face
+        Page Up:          advance 100 faces
+        Page Down:        go back 100 faces
+        Home:             view first face
+        Page Down:        view last face
+        r:                reset view
+        f:                center data on screen
+        q:                quit
+
 
 
 Future Work
