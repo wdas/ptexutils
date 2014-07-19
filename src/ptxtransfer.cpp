@@ -376,7 +376,7 @@ class PixelBuffer
 
 void imageMirrorRows(unsigned char* data, int w, int h, int datasize)
 {
-    unsigned char tmp[datasize];
+    unsigned char* tmp = new unsigned char[datasize];
     int halfw = w/2;
     
     for (int pix=0; pix<h*halfw; pix++)
@@ -388,6 +388,8 @@ void imageMirrorRows(unsigned char* data, int w, int h, int datasize)
         memcpy(row+x*datasize, row+(w-1-x)*datasize, datasize);
         memcpy(row+(w-1-x)*datasize, tmp, datasize);
     }
+    
+    delete [] tmp;
 }
 
 void imageRotate(unsigned char* data, int w, int h, int datasize, int rotations)
@@ -540,7 +542,7 @@ bool transferPtex(std::string input, std::string output, float searchDist = -1, 
     PtexPtr<PtexWriter> w(PtexWriter::open(output.c_str(), meshType, dataType,
                           numchan, targetAlpha, toMesh.numFaces(), ptexError));
 
-    float errval[numchan];
+    float* errval = new float[numchan];
     for (int i=0; i<numchan; i++) errval[i] = 1;
     
     int copied = 0;
@@ -665,6 +667,8 @@ bool transferPtex(std::string input, std::string output, float searchDist = -1, 
         
         w->writeFace(faceid, f, pixels.getData(), 0);
     }
+    
+    delete [] errval;
     
     std::cout << "\n";
     if (copied>0) std::cout << "  Copied " << copied << " faces using a tolerance of " << matchDist << "\n";
