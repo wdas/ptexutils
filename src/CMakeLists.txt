@@ -14,6 +14,7 @@
 # You may obtain a copy of the License at
 # http://www.apache.org/licenses/LICENSE-2.0
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -Wall -pedantic")
 
 add_executable(ptxtransfer ptxtransfer.cpp)
 target_link_libraries(ptxtransfer ${PTEX_LIBRARIES} gomp)
