@@ -30,6 +30,8 @@ SET( ${PROJECT_NAME}_MAJOR_VERSION 0 )
 SET( ${PROJECT_NAME}_MINOR_VERSION 1 )
 SET( ${PROJECT_NAME}_PATCH_LEVEL 0 )
 
+set(INSTALL_BIN_PATH bin CACHE STRING "Executable install directory")
+
 # output executable and library path
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
@@ -70,6 +72,10 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 ## Search for useful libraries
 find_package(PTex REQUIRED)
+find_package(OpenMP REQUIRED)
+find_package(GLUT REQUIRED)
+find_package(ZLIB REQUIRED)
+find_package(OpenGL REQUIRED)
 
 
 #INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR}/src/lib )
