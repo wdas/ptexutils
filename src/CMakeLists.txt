@@ -14,14 +14,26 @@
 # You may obtain a copy of the License at
 # http://www.apache.org/licenses/LICENSE-2.0
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -Wall -pedantic")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+
+if(CMAKE_COMPILER_IS_GNUCXX)
+  set(CMAKE_CXX_FLAGS
+      "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -Wno-unused-parameter")
+endif()
+
+include_directories(${PTEX_INCLUDE_DIR}
+                    ${OPENGL_INCLUDE_DIR}
+                    ${GLUT_INCLUDE_DIR})
 
 add_executable(ptxtransfer ptxtransfer.cpp)
-target_link_libraries(ptxtransfer ${PTEX_LIBRARIES} gomp)
+target_link_libraries(ptxtransfer ${PTEX_LIBRARIES} ${ZLIB_LIBRARIES})
 
 add_executable(ptxview ptxview.cpp)
-target_link_libraries(ptxview ${PTEX_LIBRARIES} glut GLU)
+target_link_libraries(ptxview ${PTEX_LIBRARIES}
+                              ${GLUT_LIBRARIES}
+                              ${OPENGL_LIBRARIES}
+                              ${ZLIB_LIBRARIES})
 
-install(TARGETS ptxtransfer DESTINATION bin)
+install(TARGETS ptxtransfer DESTINATION ${BIN_INSTALL_DIR})
 
-install(TARGETS ptxview DESTINATION bin)
+install(TARGETS ptxview DESTINATION ${BIN_INSTALL_DIR})
