@@ -39,9 +39,6 @@ SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 ## Setup platform specific helper defines build variants
 IF(WIN32)
   ADD_DEFINITIONS (-DPTEXUTILS_WIN32 -D_USE_MATH_DEFINES)
-ELSE(WIN32)
-  ADD_DEFINITIONS (-Wextra -Wno-unused-parameter)
-  SET( CMAKE_CXX_FLAGS "-fPIC")
 ENDIF(WIN32)
 
 ## Choose build options
