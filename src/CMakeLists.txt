@@ -16,7 +16,9 @@
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS} -Wall -pedantic")
 
-include_directories(${PTEX_INCLUDE_DIR})
+include_directories(${PTEX_INCLUDE_DIR}
+                    ${OPENGL_INCLUDE_DIR}
+                    ${GLUT_INCLUDE_DIR})
 
 add_executable(ptxtransfer ptxtransfer.cpp)
 target_link_libraries(ptxtransfer ${PTEX_LIBRARIES} ${ZLIB_LIBRARIES})
@@ -27,6 +29,6 @@ target_link_libraries(ptxview ${PTEX_LIBRARIES}
                               ${OPENGL_LIBRARIES}
                               ${ZLIB_LIBRARIES})
 
-install(TARGETS ptxtransfer DESTINATION ${INSTALL_BIN_PATH})
+install(TARGETS ptxtransfer DESTINATION ${BIN_INSTALL_DIR})
 
-install(TARGETS ptxview DESTINATION ${INSTALL_BIN_PATH})
+install(TARGETS ptxview DESTINATION ${BIN_INSTALL_DIR})
