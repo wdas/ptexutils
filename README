@@ -97,6 +97,27 @@ Hot Keys:
         q:                quit
 
 
+Using ptxconvert
+----------------
+
+The ptxconvert utility can be used to convert image data to or from
+the Ptex format, including environment cube maps (Penv). General
+multi-face Ptex files are not supported, as this tool is intended for
+regular image conversion.
+
+To convert a single-face Ptex file to a JPEG image:
+
+ptxconvert in.ptx out.jpg
+
+To convert a TIFF (must be power-of-two dimensions) to Ptex, with
+periodic border modes in u and v:
+
+ptxconvert in.tif out.ptx -mode periodic
+
+To convert six cube-map images into a Ptex environment map:
+
+ptxconvert -envcube px.tif nx.tif py.tif ny.tif pz.tif nz.tif out.penv
+
 
 Future Work
 -----------
