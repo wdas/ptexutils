@@ -72,6 +72,7 @@ find_package(PTex REQUIRED)
 find_package(OpenMP REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(OpenGL REQUIRED)
+find_package(OIIO REQUIRED)
 
 ## Trasitive dependency, needed when linking with static libPTex
 find_package(ZLIB REQUIRED)
