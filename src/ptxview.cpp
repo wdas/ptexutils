@@ -1355,7 +1355,6 @@ int main(int argc, char **argv)
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(128, 128);
     glutInitWindowSize(512, 512);
-    char windowtitle[128];
     std::string s = filename;
     if (s.length()>=64)
     {
@@ -1365,8 +1364,13 @@ int main(int argc, char **argv)
         else
             s = s.substr(s.length()-64,64);
     }
-    snprintf(windowtitle,128,"ptxview %s",s.c_str());
-    glutCreateWindow(windowtitle);
+
+    std::string windowtitle = "ptxview ";
+    windowtitle += s;
+    if (windowtitle.size() > 128)
+        windowtitle.resize(128);
+
+    glutCreateWindow(windowtitle.c_str());
 
     glutDisplayFunc(renderScene);
     glutCloseFunc(closeEvent);
