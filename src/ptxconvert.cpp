@@ -43,7 +43,7 @@ struct Options {
 } opt;
 
 
-using namespace OpenImageIO;
+using namespace OpenImageIO_v2_1;
 
 template<typename T>
 inline void divalpha(T* data, int npixels, int nchannels, int alphachan, float scale)
