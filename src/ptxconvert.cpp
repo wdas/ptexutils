@@ -25,6 +25,9 @@
 #include "PtexHalf.h"
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
+#if __GNUC__ >= 9
+#pragma GCC diagnostic ignored "-Wdeprecated-copy"
+#endif
 #include <OpenImageIO/imageio.h>
 
 
@@ -43,7 +46,7 @@ struct Options {
 } opt;
 
 
-using namespace OpenImageIO;
+OIIO_NAMESPACE_USING
 
 template<typename T>
 inline void divalpha(T* data, int npixels, int nchannels, int alphachan, float scale)

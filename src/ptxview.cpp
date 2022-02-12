@@ -55,7 +55,6 @@ public:
     Vec3f() { p[0]=0.0; p[1]=0.0; p[2]=0.0; }
     Vec3f(float x, float y, float z) { p[0]=x; p[1]=y; p[2]=z; }
     Vec3f(const float *f) { p[0]=f[0]; p[1]=f[1]; p[2]=f[2]; }
-    Vec3f(const Vec3f& v) { p[0]=v.p[0]; p[1]=v.p[1]; p[2]=v.p[2];}
     inline float* getValue() { return p; }
     inline double length() { return sqrt(p[0]*p[0]+p[1]*p[1]+p[2]*p[2]); }
     float dot(const Vec3f &v) const
