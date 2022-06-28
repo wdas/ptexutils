@@ -34,10 +34,14 @@ target_link_libraries(ptxview ${PTEX_LIBRARIES}
                               ${GLUT_LIBRARIES}
                               ${OPENGL_LIBRARIES}
                               ${ZLIB_LIBRARIES})
+IF(WIN32)
+  target_link_libraries(ptxview ${GLEW_LIBRARIES})
+ENDIF(WIN32)
 
 add_executable(ptxconvert ptxconvert.cpp)
 target_link_libraries(ptxconvert ${PTEX_LIBRARIES}
                                  ${OIIO_LIBRARIES}
+                                 ${OIIO_Util_LIBRARIES}
                                  ${ZLIB_LIBRARIES})
 
 install(TARGETS ptxtransfer DESTINATION ${BIN_INSTALL_DIR})

@@ -73,11 +73,18 @@ find_package(OpenMP REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(OIIO REQUIRED)
+IF(WIN32)
+    find_package(GLEW REQUIRED)
+ENDIF(WIN32)
 
 ## Trasitive dependency, needed when linking with static libPTex
 find_package(ZLIB REQUIRED)
 
 #INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR}/src/lib )
+
+## Use static ptex library
+option(USE_PTEX_STATIC ON)
+add_definitions(-DPTEX_STATIC)
 
 ## Traverse subdirectories
 ADD_SUBDIRECTORY (src)
