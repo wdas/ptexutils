@@ -41,6 +41,33 @@ IF(WIN32)
   ADD_DEFINITIONS (-DPTEXUTILS_WIN32 -D_USE_MATH_DEFINES)
 ENDIF(WIN32)
 
+# Adjust OpenMP in Clang on Apple platforms
+IF(APPLE)
+    IF(CMAKE_C_COMPILER_ID MATCHES "Clang")
+        SET(OpenMP_C "${CMAKE_C_COMPILER}" CACHE STRING "" FORCE)
+        SET(OpenMP_C_FLAGS "-fopenmp=libomp -Wno-unused-command-line-argument" CACHE STRING "" FORCE)
+        SET(OpenMP_C_LIB_NAMES "libomp" "libgomp" "libiomp5" CACHE STRING "" FORCE)
+        SET(OpenMP_libomp_LIBRARY ${OpenMP_C_LIB_NAMES} CACHE STRING "" FORCE)
+        SET(OpenMP_libgomp_LIBRARY ${OpenMP_C_LIB_NAMES} CACHE STRING "" FORCE)
+        SET(OpenMP_libiomp5_LIBRARY ${OpenMP_C_LIB_NAMES} CACHE STRING "" FORCE)
+    ENDIF()
+
+    IF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        SET(OpenMP_CXX "${CMAKE_CXX_COMPILER}" CACHE STRING "" FORCE)
+        SET(OpenMP_CXX_FLAGS "-fopenmp=libomp -Wno-unused-command-line-argument -Wno-everything" CACHE STRING "" FORCE)
+        SET(OpenMP_CXX_LIB_NAMES "libomp" "libgomp" "libiomp5" CACHE STRING "" FORCE)
+        SET(OpenMP_libomp_LIBRARY ${OpenMP_CXX_LIB_NAMES} CACHE STRING "" FORCE)
+        SET(OpenMP_libgomp_LIBRARY ${OpenMP_CXX_LIB_NAMES} CACHE STRING "" FORCE)
+        SET(OpenMP_libiomp5_LIBRARY ${OpenMP_CXX_LIB_NAMES} CACHE STRING "" FORCE)
+    ENDIF()
+
+    # Default (Command-line tools & Xcode toolchain) compiler won't provide proper OpenMP functionality on macOS.
+    # Compiler obtained from `brew install llvm` will suffice. 
+    # Create a symbolic link for ease of use.
+    SET(CMAKE_CXX_COMPILER clang-omp++ CACHE STRING "C++ compiler" FORCE)
+ENDIF()
+
+
 ## Choose build options
 # Disney specific method of choosing variant
 IF("$ENV{FLAVOR}" STREQUAL "optimize")
