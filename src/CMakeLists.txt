@@ -32,11 +32,9 @@ target_link_libraries(ptxtransfer ${PTEX_LIBRARIES} ${ZLIB_LIBRARIES})
 add_executable(ptxview ptxview.cpp)
 target_link_libraries(ptxview ${PTEX_LIBRARIES}
                               ${GLUT_LIBRARIES}
+                              ${GLEW_LIBRARIES}
                               ${OPENGL_LIBRARIES}
                               ${ZLIB_LIBRARIES})
-IF(WIN32)
-  target_link_libraries(ptxview ${GLEW_LIBRARIES})
-ENDIF(WIN32)
 
 add_executable(ptxconvert ptxconvert.cpp)
 target_link_libraries(ptxconvert ${PTEX_LIBRARIES}

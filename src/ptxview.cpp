@@ -28,9 +28,7 @@
 #ifdef OSX
 #include <glut.h>
 #else
-#ifdef _WIN32
 # include <GL/glew.h>
-#endif
 #include <GL/freeglut.h>
 #include <GL/glu.h>
 #endif
@@ -1383,9 +1381,7 @@ int main(int argc, char **argv)
     glutKeyboardFunc(keyboardEvent);
     glutSpecialFunc(keySpecEvent);
 
-#ifdef _WIN32
     glewInit();
-#endif
 
     createMenus();
     

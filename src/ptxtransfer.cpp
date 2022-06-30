@@ -257,7 +257,7 @@ class Mesh
         }
 
         verts.resize(vertcount/3);
-        for (uint32_t i=0; i<verts.size(); i++) verts[i] = Vec3f(vp[i*3],vp[i*3+1],vp[i*3+2]);
+        for (size_t i=0; i<verts.size(); i++) verts[i] = Vec3f(vp[i*3],vp[i*3+1],vp[i*3+2]);
 
         int vi = 0;
         for (int fi=0; fi<facevertcount; fi++)
