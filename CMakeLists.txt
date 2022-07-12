@@ -21,8 +21,11 @@ set(${PROJECT_NAME}_MAJOR_VERSION 0)
 set(${PROJECT_NAME}_MINOR_VERSION 1)
 set(${PROJECT_NAME}_PATCH_LEVEL 0)
 
+set(CMAKE_CXX_EXTENSIONS OFF)
 SET(CMAKE_VERBOSE_MAKEFILE TRUE)
 set(CMAKE_SKIP_BUILD_RPATH TRUE)
+set(CMAKE_FIND_PACKAGE_RESOLVE_SYMLINKS TRUE)
+set(OpenGL_GL_PREFERENCE GLVND)
 
 include(GNUInstallDirs)
 
@@ -48,6 +51,11 @@ if(NOT CMAKE_BUILD_TYPE)
       FORCE)
 endif()
 
+if (DEFINED ENV{CXXFLAGS_STD})
+    string(REPLACE "c++" "" cxx_std $ENV{CXXFLAGS_STD})
+    set(CMAKE_CXX_STANDARD ${cxx_std})
+endif()
+
 ## Set install location
 if (NOT DEFINED CMAKE_INSTALL_PREFIX)
     execute_process(COMMAND sh -c "echo `uname`-`uname -r | cut -d'-' -f1`-`uname -m`"
@@ -56,11 +64,30 @@ if (NOT DEFINED CMAKE_INSTALL_PREFIX)
     set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/${VARIANT_DIRECTORY}")
 endif()
 
+if (DEFINED ENV{RP_glew})
+    set(GLEW_ROOT $ENV{RP_glew} CACHE PATH "glew location" FORCE)
+endif()
+
+if (DEFINED ENV{RP_freeglut})
+    set(GLUT_ROOT $ENV{RP_freeglut} CACHE PATH "glut location" FORCE)
+endif()
+
+
+if (DEFINED ENV{RP_mesa})
+    set(OPENGL_INCLUDE_DIR "$ENV{RP_mesa}/include" CACHE PATH "OpenGL headers" FORCE)
+    set(OPENGL_EGL_INCLUDE_DIR "$ENV{RP_mesa}/include" CACHE PATH "OpenGL EGL headers" FORCE)
+    set(OPENGL_GL_INCLUDE_DIR "$ENV{RP_mesa}/include" CACHE PATH "OpenGL GL headers" FORCE)
+    set(OPENGL_GLX_INCLUDE_DIR "$ENV{RP_mesa}/include" CACHE PATH "OpenGL GLX headers" FORCE)
+endif()
+if (DEFINED ENV{RP_zlib})
+    set(ZLIB_ROOT $ENV{RP_zlib} CACHE PATH "zlib location" FORCE)
+endif()
+
 ## Set the cmake module path
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 ## Search for useful libraries
-find_package(PTex REQUIRED)
+find_package(Ptex REQUIRED)
 find_package(OpenMP REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(GLEW REQUIRED)
@@ -70,12 +97,12 @@ find_package(OIIO REQUIRED)
 ## Trasitive dependency, needed when linking with static libPTex
 find_package(ZLIB REQUIRED)
 
-#INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR}/src/lib )
-
 ## Use static ptex library
-option(PTEX_USE_STATIC_LIBS "Link against Ptex static libraries" OFF)
-if(PTEX_USE_STATIC_LIBS)
-    add_definitions(-DPTEX_STATIC)
+option(PTEX_USE_STATIC_LIBS "Link against Ptex static libraries" ON)
+if (PTEX_USE_STATIC_LIBS)
+    set(PTEX_LIBRARIES Ptex::Ptex_static)
+else()
+    set(PTEX_LIBRARIES Ptex::Ptex_dynamic)
 endif()
 
 ## Traverse subdirectories

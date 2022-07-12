@@ -4,17 +4,22 @@ find_path( OIIO_INCLUDE_DIR
         OpenImageIO/imageio.h
     PATHS
         ${OIIO_INCLUDE_PATH}
-        ${OIIO_PATH}/include/
+        ${OIIO_PATH}/include
         /usr/include
         /usr/local/include
         /sw/include
         /opt/local/include
         DOC "The directory where OpenImageIO/imageio.h resides")
 
+if (DEFINED ENV{RP_oiio})
+    set(OIIO_INCLUDE_DIR "$ENV{RP_oiio}/include")
+endif()
+
 find_library( OIIO_LIBRARIES
     NAMES
          OIIO OpenImageIO
     PATHS
+        $ENV{RP_oiio}/${CMAKE_INSTALL_LIBDIR}
         ${OIIO_LIBRARY_PATH}
         ${OIIO_PATH}/lib64/
         ${OIIO_PATH}/lib/
@@ -30,6 +35,7 @@ find_library( OIIO_Util_LIBRARIES
     NAMES
          OIIO_Util OpenImageIO_Util
     PATHS
+        $ENV{RP_oiio}
         ${OIIO_LIBRARY_PATH}
         ${OIIO_PATH}/lib64/
         ${OIIO_PATH}/lib/

@@ -21,20 +21,22 @@ if(CMAKE_COMPILER_IS_GNUCXX)
       "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -Wno-unused-parameter -std=c++0x -Wl,--allow-shlib-undefined")
 endif()
 
-include_directories(${PTEX_INCLUDE_DIR}
-                    ${OPENGL_INCLUDE_DIR}
-                    ${GLUT_INCLUDE_DIR}
-                    ${OIIO_INCLUDE_DIR})
+include_directories(${OIIO_INCLUDE_DIR})
+
+if (DEFINED ENV{RP_openexr2})
+    include_directories("$ENV{RP_openexr2}/include")
+endif()
 
 add_executable(ptxtransfer ptxtransfer.cpp)
 target_link_libraries(ptxtransfer ${PTEX_LIBRARIES} ${ZLIB_LIBRARIES})
 
 add_executable(ptxview ptxview.cpp)
-target_link_libraries(ptxview ${PTEX_LIBRARIES}
-                              ${GLUT_LIBRARIES}
+target_link_libraries(ptxview ${GLUT_LIBRARIES}
                               ${GLEW_LIBRARIES}
-                              ${OPENGL_LIBRARIES}
-                              ${ZLIB_LIBRARIES})
+                              OpenGL::OpenGL
+                              OpenGL::GLU
+                              ${ZLIB_LIBRARIES}
+                              ${PTEX_LIBRARIES})
 
 add_executable(ptxconvert ptxconvert.cpp)
 target_link_libraries(ptxconvert ${PTEX_LIBRARIES}
