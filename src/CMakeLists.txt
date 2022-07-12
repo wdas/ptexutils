@@ -42,8 +42,8 @@ target_link_libraries(ptxconvert ${PTEX_LIBRARIES}
                                  ${OIIO_Util_LIBRARIES}
                                  ${ZLIB_LIBRARIES})
 
-install(TARGETS ptxtransfer DESTINATION ${BIN_INSTALL_DIR})
+install(TARGETS ptxtransfer DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-install(TARGETS ptxview DESTINATION ${BIN_INSTALL_DIR})
+install(TARGETS ptxview DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-install(TARGETS ptxconvert DESTINATION ${BIN_INSTALL_DIR})
+install(TARGETS ptxconvert DESTINATION ${CMAKE_INSTALL_BINDIR})
