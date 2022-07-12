@@ -37,32 +37,32 @@ SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 ## Setup platform specific helper defines build variants
-IF(WIN32)
+if(WIN32)
   ADD_DEFINITIONS (-DPTEXUTILS_WIN32 -D_USE_MATH_DEFINES)
-ENDIF(WIN32)
+endif(WIN32)
 
 ## Choose build options
 # Disney specific method of choosing variant
-IF("$ENV{FLAVOR}" STREQUAL "optimize")
+if("$ENV{FLAVOR}" STREQUAL "optimize")
     SET(CMAKE_BUILD_TYPE "Release" CACHE STRING "type of build" FORCE)
-ENDIF("$ENV{FLAVOR}" STREQUAL "optimize")
-IF("$ENV{FLAVOR}" STREQUAL "debug")
+endif("$ENV{FLAVOR}" STREQUAL "optimize")
+if("$ENV{FLAVOR}" STREQUAL "debug")
     SET(CMAKE_BUILD_TYPE "Debug" CACHE STRING "type of build" FORCE)
-ENDIF("$ENV{FLAVOR}" STREQUAL "debug")
+endif("$ENV{FLAVOR}" STREQUAL "debug")
 # Set to release if nothing else defined
-IF(NOT CMAKE_BUILD_TYPE)
+if(NOT CMAKE_BUILD_TYPE)
   SET(CMAKE_BUILD_TYPE "Release" CACHE STRING
       "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel."
       FORCE)
-ENDIF(NOT CMAKE_BUILD_TYPE)
+endif(NOT CMAKE_BUILD_TYPE)
 
 ## Set install location
-IF (NOT DEFINED CMAKE_INSTALL_PREFIX)
+if (NOT DEFINED CMAKE_INSTALL_PREFIX)
     EXECUTE_PROCESS(COMMAND sh -c "echo `uname`-`uname -r | cut -d'-' -f1`-`uname -m`"
                     OUTPUT_VARIABLE VARIANT_DIRECTORY
 		    OUTPUT_STRIP_TRAILING_WHITESPACE)
     SET(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/${VARIANT_DIRECTORY}")
-ENDIF(NOT DEFINED CMAKE_INSTALL_PREFIX)
+endif(NOT DEFINED CMAKE_INSTALL_PREFIX)
 
 ## Set the cmake module path
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
@@ -71,6 +71,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 find_package(PTex REQUIRED)
 find_package(OpenMP REQUIRED)
 find_package(GLUT REQUIRED)
+find_package(GLEW REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(OIIO REQUIRED)
 
@@ -78,6 +79,12 @@ find_package(OIIO REQUIRED)
 find_package(ZLIB REQUIRED)
 
 #INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR}/src/lib )
+
+## Use static ptex library
+option(PTEX_USE_STATIC_LIBS "Link against Ptex static libraries" OFF)
+if(PTEX_USE_STATIC_LIBS)
+    add_definitions(-DPTEX_STATIC)
+endif()
 
 ## Traverse subdirectories
 ADD_SUBDIRECTORY (src)

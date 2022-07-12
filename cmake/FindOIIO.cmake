@@ -25,3 +25,18 @@ find_library( OIIO_LIBRARIES
         /sw/lib
         /opt/local/lib
         DOC "The OIIO library")
+
+find_library( OIIO_Util_LIBRARIES
+    NAMES
+         OIIO_Util OpenImageIO_Util
+    PATHS
+        ${OIIO_LIBRARY_PATH}
+        ${OIIO_PATH}/lib64/
+        ${OIIO_PATH}/lib/
+        /usr/lib64
+        /usr/lib
+        /usr/local/lib64
+        /usr/local/lib
+        /sw/lib
+        /opt/local/lib
+        DOC "The OIIO Util library")

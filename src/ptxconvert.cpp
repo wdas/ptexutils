@@ -317,7 +317,7 @@ bool readImage(const std::string& path, Img& img)
     if (endsWith(path, ".ptx")) {
         img.path = path;
         // read ptx face-zero image
-        std::string error;
+        Ptex::String error;
         PtexTexture* ptx = PtexTexture::open(path.c_str(), error);
         if (!ptx) {
             std::cerr << error << std::endl;
@@ -345,7 +345,7 @@ bool writeImage(const std::string& path, Img& img)
         if (!checkPowerOfTwo(img)) return 0;
 
         // write ptx face-zero image
-        std::string error;
+        Ptex::String error;
         PtexWriter* ptx = PtexWriter::open(path.c_str(), Ptex::mt_quad, img.dt,
                                            img.nchan, img.achan, 1, error);
         if (!ptx) {
@@ -387,7 +387,7 @@ bool writeImage(const std::string& path, Img& img)
 
 bool readEnvcube(const std::string& path, Img images[6])
 {
-    std::string error;
+    Ptex::String error;
     PtexTexture* ptx = PtexTexture::open(path.c_str(), error);
     if (!ptx) {
         std::cerr << error << std::endl;
@@ -456,7 +456,7 @@ bool writeEnvcube(const std::string& path, Img images[6])
     }
 
     // write file
-    std::string error;
+    Ptex::String error;
     PtexWriter* w = PtexWriter::open(opt.dst.c_str(), Ptex::mt_quad, dt, nchan, achan,
                                      6, error);
     if (!w) {

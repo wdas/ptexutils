@@ -28,6 +28,7 @@
 #ifdef OSX
 #include <glut.h>
 #else
+# include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <GL/glu.h>
 #endif
@@ -1379,7 +1380,9 @@ int main(int argc, char **argv)
     glutPassiveMotionFunc(mousePassiveEvent);
     glutKeyboardFunc(keyboardEvent);
     glutSpecialFunc(keySpecEvent);
-    
+
+    glewInit();
+
     createMenus();
     
     if (datascale!=0) w.setDataScale(datascale);

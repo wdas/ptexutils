@@ -170,14 +170,14 @@ template <int k> class KdTree
 
     struct NearestNQuery
     {
-        NearestNQuery(std::vector<int>& result,std::vector<float>& distanceSquared,const float pquery_in[k],uint maxPoints,float maxRadiusSquared)
+        NearestNQuery(std::vector<int>& result,std::vector<float>& distanceSquared,const float pquery_in[k],uint32_t maxPoints,float maxRadiusSquared)
             :result(result),distanceSquared(distanceSquared),maxPoints(maxPoints),maxRadiusSquared(maxRadiusSquared)
         {for(int i=0;i<k;i++) pquery[i]=pquery_in[i];}
 
         std::vector<int>& result;
         std::vector<float>& distanceSquared;
         float pquery[k];
-        uint maxPoints;
+        uint32_t maxPoints;
         float maxRadiusSquared;
     };
 
@@ -297,14 +297,14 @@ void KdTree<k>::sort()
     _sorted = 1;
 
     // reorder ids to sort points
-    uint np = _points.size();
+    uint32_t np = _points.size();
     if (!np) return;
     while (_ids.size() < np) _ids.push_back(_ids.size());
     if (np > 1) sortSubtree(0, np, 0);
 
     // reorder points to match id order
     std::vector<Point> newpoints(np);
-    for (uint i = 0; i < np; i++)
+    for (uint32_t i = 0; i < np; i++)
         newpoints[i] = _points[_ids[i]];
     std::swap(_points, newpoints);
 }
