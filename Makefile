@@ -30,7 +30,7 @@ $(CMAKE_BUILD_DIR)/Makefile: CMakeLists.txt src/CMakeLists.txt $(CMAKE_BUILD_DIR
 cmake: $(CMAKE_BUILD_DIR)/Makefile
 
 install: cmake
-	$(MAKE) --quiet -C $(CMAKE_BUILD_DIR) install $(MFLAGS)
+	$(MAKE) --no-print-directory -C $(CMAKE_BUILD_DIR) install $(MFLAGS)
 
 .PHONY: all install cmake
 .PHONY: FORCE
