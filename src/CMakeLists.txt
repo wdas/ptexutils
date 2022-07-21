@@ -41,7 +41,7 @@ target_link_libraries(ptxview ${GLUT_LIBRARIES}
 add_executable(ptxconvert ptxconvert.cpp)
 target_link_libraries(ptxconvert ${PTEX_LIBRARIES}
                                  ${OIIO_LIBRARIES}
-                                 ${OIIO_Util_LIBRARIES}
+                                 ${OIIO_LIBRARIES_UTIL}
                                  ${ZLIB_LIBRARIES})
 
 install(TARGETS ptxtransfer DESTINATION ${CMAKE_INSTALL_BINDIR})

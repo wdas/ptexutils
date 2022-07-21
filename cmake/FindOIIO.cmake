@@ -31,9 +31,12 @@ find_library( OIIO_LIBRARIES
         /opt/local/lib
         DOC "The OIIO library")
 
-find_library( OIIO_Util_LIBRARIES
+# From OIIO changelog - Version: 2.3 (1 Sept 2021)
+#   "All the utility classes are now in libOpenImageIO_Util only and libOpenImageIO depends on and links to libOpenImageIO_Util, 
+#   rather than the utility classes being defined separately in both libraries."
+find_library( OIIO_LIBRARIES_UTIL
     NAMES
-         OIIO_Util OpenImageIO_Util
+        OIIO_Util OpenImageIO_Util
     PATHS
         $ENV{RP_oiio}
         ${OIIO_LIBRARY_PATH}
@@ -45,4 +48,4 @@ find_library( OIIO_Util_LIBRARIES
         /usr/local/lib
         /sw/lib
         /opt/local/lib
-        DOC "The OIIO Util library")
+        DOC "The OIIO library utility")
