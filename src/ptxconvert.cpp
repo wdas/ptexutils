@@ -36,6 +36,7 @@ struct Options {
     Ptex::DataType dt;
     std::string envfaces[6];
     bool src_is_envcube, dst_is_envcube;
+    bool all_faces{false};
     std::string src, dst;
     std::map<std::string,std::string> meta;
 
@@ -250,6 +251,7 @@ void usage()
               << "    -vmode (clamp|black|periodic)\n"
               << "    -envcube pxfile nxfile pyfile nyfile pzfile nzfile\n"
               << "    -meta key value\n"
+              << "    -allfaces - convert each face to a separate file\n"
               << "\n"
               << "Note:\n"
               << "    -envcube can be used in place of srcfile or dstfile\n"
@@ -475,6 +477,16 @@ bool writeEnvcube(const std::string& path, Img images[6])
 }
 
 
+std::string extension(const std::string& filename)
+{
+    size_t pos = filename.rfind('.');
+    if (pos == std::string::npos) {
+        return "";
+    }
+    return filename.substr(pos);
+}
+
+
 bool parseArgs(int argc, char** argv)
 {
     // parse args
@@ -528,6 +540,9 @@ bool parseArgs(int argc, char** argv)
                 }
                 if (arg == "-umode" || arg == "-mode") opt.uMode = mode;
                 if (arg == "-vmode" || arg == "-mode") opt.vMode = mode;
+            }
+            else if (arg == "-allfaces") {
+                opt.all_faces = true;
             }
             else {
                 badoption(arg);
@@ -599,10 +614,57 @@ bool convertFile(const std::string& src, const std::string& dst)
         return copyEnvcube();
     }
 
-    Img img;
-    if (!readImage(src, img)) return 0;
-    if (!writeImage(dst, img)) return 0;
-    return 1;
+    if (opt.all_faces) {
+        const std::string ext = extension(dst);
+        if (ext.empty() || dst.length() <= ext.length()) {
+            error("output filename does not contain a file extension");
+            return false;
+        }
+        const std::string basename = dst.substr(0, dst.length() - ext.length());
+        Ptex::String error;
+        PtexTexture* ptx = PtexTexture::open(src.c_str(), error);
+        if (!ptx) {
+            std::cerr << error << std::endl;
+            return false;
+        }
+        int faces = ptx->numFaces();
+        bool result{true};
+        int max_digits = int(floorf(log10f(float(faces))));
+
+        for (int faceid = 0; faceid < faces; ++faceid) {
+            Img img;
+            bool ok = PtexToImg(ptx, img, /*faceid*/ faceid, /*flip*/ true);
+            if (!ok) {
+                std::cerr << "Error: unable to read face id " << faceid << std::endl;
+                result = false;
+                continue;
+            }
+            const std::string number = std::to_string(faceid);
+            int pad_count = max_digits - number.length();
+
+            // Format the filename to include the faceid. "example.png" becomes "example.0001.png".
+            std::string output{basename};
+            output += '.';
+            for (int i = 0; pad_count > 0 && i < pad_count; ++i) {
+                output += '0';
+            }
+            output += number;
+            output += ext;
+
+            if (!writeImage(output, img)) {
+                return false;
+            }
+        }
+
+        ptx->release();
+
+        return result;
+    } else {
+        Img img;
+        if (!readImage(src, img)) return 0;
+        if (!writeImage(dst, img)) return 0;
+        return 1;
+    }
 }
 
 
