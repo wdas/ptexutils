@@ -10,7 +10,9 @@ CMAKE_BUILD_DIR ?= build/$(prefix_base)
 # Add more variables here to force a rebuild when they change
 TRACK_FLAGS = $(prefix):$(FLAVOR)
 
-all: install
+default: install
+
+all: cmake compile_commands
 
 # Record build flags so that we can force cmake to reconfigure
 $(CMAKE_BUILD_DIR)/FLAGS: FORCE
@@ -29,7 +31,11 @@ $(CMAKE_BUILD_DIR)/Makefile: CMakeLists.txt src/CMakeLists.txt $(CMAKE_BUILD_DIR
 
 cmake: $(CMAKE_BUILD_DIR)/Makefile
 
-install: cmake
+compile_commands: cmake
+	rm -f build/compile_commands.json
+	ln -s $(prefix_base)/compile_commands.json build/compile_commands.json
+
+install: all
 	$(MAKE) --no-print-directory -C $(CMAKE_BUILD_DIR) install $(MFLAGS)
 
 .PHONY: all install cmake
